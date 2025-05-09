@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promedio de notas </title>
+</head>
+<link rel="stylesheet" href="styles.css">   
+<body>
+
+    <div class="container">
+        <h1>Calcular Promedio</h1>
+        
+        <table>
+            <tr>
+                <td>Ingles: </td>
+                <td><input type="number" id="ingles" placeholder=" Inglés" /></td>
+            </tr>
+            <tr>
+                <td>Física:  </td>
+                <td><input type="number" id="fisica" placeholder=" Física" /></td>
+            </tr>
+            <tr>
+                <td>Matematicas:  </td>
+                <td><input type="number" id="matematica" placeholder=" Matemáticas" /></td>
+            </tr>
+            <tr>
+                <td>java:  </td>
+                <td><input type="number" id="java" placeholder=" Java" /></td>
+            </tr>
+            <tr>
+                <td>Python:  </td>
+                <td><input type="number" id="python" placeholder=" Python" /></td>
+            </tr>
+            <tr>
+                <td>Base de datos:  </td>
+                <td><input type="number" id="bd" placeholder=" Base de Datos" /></td>
+            </tr>
+            <tr>
+                <td>Front:  </td>
+                <td><input type="number" id="front" placeholder=" Front" /></td>
+            </tr>
+            <tr>
+                <td>Gimnasia</td>
+                <td><input type="number" id="gimnasia" placeholder=" Gimnasia" /></td>
+            </tr>
+        </table>
+        
+        
+        
+        <button onclick="calcular()">Calcular Promedio</button>
+        
+        <p id="resultado"></p>
+    </div>
+
+
+    <script>
+
+        function calcular(){
+            const ingles = document.getElementById("ingles").value;
+            const fisica = document.getElementById("fisica").value;
+            const matematica = document.getElementById("matematica").value;
+            const java = document.getElementById("java").value; 
+            const python = document.getElementById("python").value;
+            const bd = document.getElementById("bd").value;
+            const front = document.getElementById("front").value;
+            const gimnasia = document.getElementById("gimnasia").value;
+
+            const promedio = parseInt(ingles) + parseInt(fisica) + parseInt(matematica) + parseInt(java) + parseInt(python) + parseInt(bd) + parseInt(front) + parseInt(gimnasia);
+            const total = parseInt(promedio) / 8;
+
+           if(total>30){
+            document.getElementById("resultado").innerText = `Aprobado, con un promedio de: ${total}`;
+           }else if(total==30){
+            document.getElementById("resultado").innerText = `Pasaste raspando mani, pero aprobaste, tu promedio es: ${total}`;
+           }else{
+            document.getElementById("resultado").innerText = `No aprobaste, tu promedio es: ${total}`;
+           }
+        }
+    </script>
+    
+</body>
+</html>
+

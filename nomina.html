@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nomina</title>
+</head>
+<link rel="stylesheet" href="styles.css">   
+<body>
+
+    <div class="container">
+        <h1>Bienvenido a ConsultWeb</h1>
+        
+        <table class="tabla">    
+            <tr>
+                <td>Documento:</td>
+                <td><input type="text" id="d" placeholder="Documento" /></td>
+                <td>Nombre: </td>
+                <td><input type="text" id="n" placeholder="Nombre" /></td>
+                <td>Salario:</td>
+                <td><input type="text" id="sal" placeholder="Salario"/></td>
+            </tr>
+            <tr>
+                <td>Días trabajados:</td>
+                <td><input type="text" id="dt" placeholder="Días trabajados" /></td>
+                <td>Auxilio de transporte:</td>
+                <td><input type="text" id="ax" placeholder="Auxilio de transporte"/></td>
+                <td>Horas extra diurnas: </td>
+                <td><input type="text" id="hed" placeholder="Horas extras diurnas" /></td>
+
+            </tr>
+            <tr>
+                <td>Horas extras nocturnas:  </td>
+                <td><input type="text" id="hen" placeholder="Horas extras nocturnas" /></td>
+                <td>Prestamo</td>
+                <td><input type="text" id="Pre" placeholder="prestamo" /></td>
+                <td>Meses Prestamo</td>
+                <td><select id="MePre">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                </select></td>
+            </tr>
+        </table>
+        
+        <button onclick="calcular()">Calcular nómina</button>
+
+        
+        <div id="listaNominas"></div> 
+
+
+    </div>
+
+    
+    <script>
+       
+        function calcular() {
+            
+            const prestamo = document.getElementById("Pre").value;
+            const meses = document.getElementById("MePre").value;
+            const d = document.getElementById("d").value;
+            const n = document.getElementById("n").value;
+            const dt = document.getElementById("dt").value;
+            const hed = document.getElementById("hed").value;
+            const hen = document.getElementById("hen").value;
+            const salario = document.getElementById("sal").value;
+            const auxilio = document.getElementById("ax").value;
+            const interes = 0.05;
+
+            const salariobase = (parseInt(salario) / 30) * parseInt(dt);
+            const Ched = (parseInt(salario) / 240) * (1.25 * parseInt(hed));
+            const Chen = (parseInt(salario) / 240) * (1.75 * parseInt(hen));
+            const trans = parseInt(auxilio) / 30 * parseInt(dt);
+
+            const PreIn = (parseInt(prestamo) * interes)/(1 - Math.pow( 1 + interes, -parseInt(meses)));
+
+
+            const TDe = salariobase + Ched + Chen + trans ;
+
+            const salud = parseInt(salario) * 0.04;
+            const Pension = parseInt(salario) * 0.04;
+            const TDs = salud + Pension + parseInt(PreIn);
+
+            const total = TDe - TDs;
+
+            
+            const resultadoHTML = 
+            `
+             <div class="nomina">
+                <h2 id="resultado">Nóminas</h2>
+                <table class="lista">
+
+                 <tr>
+                    <th><strong>Señor(a)</strong></th>
+                    <th><strong>Documento</strong></th>
+                    <th><strong>SMMLV</strong></th>
+                    <th><strong>Dias T</strong></th>
+                    <th><strong>Salario base</strong></th>
+                    <th><strong>Aux Trasporte</strong></th>
+                    <th><strong>H.E Diurnas</strong></th>
+                    <th><strong>Valor H.E D</strong></th>
+                    <th><strong>H.E N</strong></th>
+                    <th><strong>Valor H.E Nocturnas</strong></th>
+                    <th><strong>Total devengado</strong></th>
+                    <th><strong>Salud</strong></th>
+                    <th><strong>Pensión</strong></th>
+                    <th><strong>Prestamo</strong></th>
+                    <th><strong>Meses Prestamo</strong></th>
+                    <th><strong>V.M + 5% de interes</strong></th>
+                    <th><strong>Total deducido</strong></th>
+                    <th><strong>Total a pagar</strong></th>
+                 </tr> 
+                 <tr>
+                    <td>${n}</td>
+                    <td>${d}</td>
+                    <td>${salario}</td>
+                    <td>${dt}</td>
+                    <td>${salariobase.toFixed(2)}</td>
+                    <td>${trans.toFixed(2)}</td>
+                    <td>${hed}</td>
+                    <td>${Ched.toFixed(2)}</td>
+                    <td>${hen}</td>
+                    <td>${Chen.toFixed(2)}</td>
+                    <td>${TDe.toFixed(2)}</td>
+                    <td>${salud.toFixed(2)}</td>
+                    <td>${Pension.toFixed(2)}</td>
+                    <td>${prestamo}</td>
+                    <td>${meses}</td>
+                    <td>${PreIn.toFixed(2)}</td>
+                    <td>${TDs.toFixed(2)}</td>
+                    <td>${total.toFixed(2)}</td>
+                 </tr> 
+                </table>
+             </div>
+         `;
+
+         document.getElementById("listaNominas").innerHTML += resultadoHTML;
+
+         document.getElementById("d").value = "";
+         document.getElementById("n").value = "";
+         document.getElementById("dt").value = "";
+         document.getElementById("hed").value = "";
+         document.getElementById("hen").value = "";
+         document.getElementById("sal").value = "";
+         document.getElementById("ax").value = "";   
+         document.getElementById("Pre").value = "";
+         document.getElementById("MePre").value = "";
+        }     
+    </script>    
+    
+</body>
+</html>

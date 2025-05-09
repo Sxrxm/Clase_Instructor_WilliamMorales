@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultorio </title>
+</head>
+<link rel="stylesheet" href="styles.css">   
+<body>
+
+    <div class="container">
+        <h1>Bienvenido a ConsultWeb</h1>
+        <P>Aqui podrás calcular tu indice de masa corporal</P>
+        
+        <table class="tabla">    
+            <tr>
+                <td>Altura:  </td>
+                <td><input type="text" id="a" placeholder="altura" /></td>
+                
+            </tr>
+            <tr>
+                <td>Peso:  </td>
+                <td><input type="text" id="p" placeholder="peso" /></td>
+            </tr>
+
+        </table>
+        
+        
+        
+        <button onclick="calcular()">Calcular masa corporal</button>
+        
+        <p id="resultado"></p>
+    </div>
+
+
+    <script>
+
+        function calcular(){
+            const al = document.getElementById("a").value;
+            const pe = document.getElementById("p").value;
+            
+
+
+         
+            const total = pe/ (al*al);
+
+           if(total< 18.5){
+            document.getElementById("resultado").innerText = `Estás por debajo del peso normal, en desnutrición, tu IMC es de: ${total}.
+            Tu dieta recomendada es:
+            - Comer al menos tres porciones de frutas y cuatro de vegetales al día. 
+            - Consumir cereales integrales en lugar de granos refinados.
+            - Incluir cantidades moderadas de grasas saludables, como aceite de oliva, aguacates, nueces, mantequillas de nueces y aceites de frutos secos`;
+           }else if(total >= 18.5 && total<= 24.9){
+            document.getElementById("resultado").innerText = `Estás en un peso adecuado, tu IMC es de: ${total}
+            Tu dieta recomendada para mantenerte así es:
+            - Consumir al menos 400 gramos de frutas y verduras al día, evitando tubérculos como papas, batatas y mandioca. 
+            - Evitar alimentos con "calorías vacías". 
+            - Reducir el consumo de azúcares libres, que son los que se añaden a los alimentos o bebidas, o los que están de forma natural en la miel, jarabes, zumos y concentrados de frutas. 
+            - Reducir el consumo de grasas saturadas y grasas trans. 
+            - Evitar bebidas azucaradas.`;
+           }else if(total>=  25.0 && total<=29.9){
+            document.getElementById("resultado").innerText = `Está en un peso mayor al adecuado, tu IMC es de: ${total}.
+            Tu dieta recomendada es 
+            - Comer más alimentos ricos en nutrientes, como frutas, verduras, granos integrales, proteínas magras y productos lácteos bajos en grasa. 
+            - Evitar alimentos con muchas calorías, como frituras, bebidas azucaradas, alimentos industrializados y “comidas rápidas”`;
+           }else if (total >= 30.0){
+            document.getElementById("resultado").innerText = `Estás en sobrepeso, tu IMC es de: ${total}
+            Tu dieta recomendada es 
+            - Priorizar la ingesta de frutas, verduras, legumbres, huevos, frutos secos, carne y pescado. 
+            - Alimentos que sean lo menos procesados posibles. 
+            - Evita los alimentos procesados, son ricos en grasas y sal y no aportan nada a nivel nutricional.`
+
+           }
+        }
+    </script>
+    
+</body>
+</html>
+

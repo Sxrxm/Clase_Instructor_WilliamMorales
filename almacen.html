@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Almacen de cadena </title>
+</head>
+<link rel="stylesheet" href="styles.css">   
+<body>
+
+    <div class="container">
+        <h1>SuperMarket</h1>
+        
+        <table class="tabla">
+            <tr>
+                <td>Producto 1:  </td>
+                <td><input type="number" id="producto1" placeholder="Producto 1" /></td>
+            </tr>
+            <tr>
+                <td>Producto 2:  </td>
+                <td><input type="number" id="Producto 2" placeholder=" Producto 2" /></td>
+            </tr>
+            <tr>
+                <td>Producto 3:  </td>
+                <td><input type="number" id="Producto 3" placeholder=" Producto 3" /></td>
+            </tr>
+        </table>        
+        
+        <button onclick="calcular()">Pagar</button>
+        
+        <p id="resultado"></p>
+    </div>
+
+
+    <script>
+
+        function calcular(){
+            const pro1 = document.getElementById("producto1").value;
+            const pro2 = document.getElementById("Producto 2").value;
+            const pro3 = document.getElementById("Producto 3").value;
+           
+
+            const total = parseInt(pro1)+ parseInt(pro2)+ parseInt(pro3);
+            const descuento = parseInt(total) * 0.3
+
+
+           if(total>3000000){
+            document.getElementById("resultado").innerText = `Su total es de: ${total}` + `
+             Su compra es superior a 3 Millones, 
+             Así que obtiene un descuento del 30%, Su total a pagar es de ${descuento} `;
+           }else {
+            document.getElementById("resultado").innerText = `Su total a pagar es de : ${total}`;
+           }
+        }
+    </script>
+    
+</body>
+</html>
+
