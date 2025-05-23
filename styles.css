@@ -89,7 +89,6 @@ input{
 
     .nomina {
         background-color: #f9f9f9;
-        padding: 15px;
         margin-bottom: 10px;
         border: 1px solid #ccc;
         border-radius: 8px; 
@@ -122,14 +121,18 @@ input{
     }
 
     lista ,th,tr{
+        border-collapse: collapse;
+        text-align: center;
         width: 100%;    
         border: 1px solid;
         right: 20px;
         font-size: 0.8REM;
+
       } 
 
     
 .tabla{
-    text-align: left;
-    margin-left: 12%;
+    text-align: center;
+    margin-left: 10%;
+
 }
