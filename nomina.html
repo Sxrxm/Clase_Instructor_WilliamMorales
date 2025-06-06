@@ -9,37 +9,38 @@
 <body>
 
     <div class="container">
-        <h1>Bienvenido a ConsultWeb</h1>
-        
+        <h1>Bienvenido a ConsultWeb</h1>    
+    <!-- Datos de entrada -->
         <table class="tabla">    
             <tr>
                 <td>Documento:</td>
-                <td><input type="text" id="d" placeholder="Documento" /></td>
+                <td><input type="text" id="d" placeholder="Documento" required onkeypress="soloNumeros(event)"/></td>
                 <td>Nombre: </td>
-                <td><input type="text" id="n" placeholder="Nombre" /></td>
+                <td><input type="text" id="n" placeholder="Nombre" required onkeypress="soloLetras(event)" /></td>
                 <td>Salario:</td>
-                <td><input type="text" id="sal" placeholder="Salario"/></td>
+                <td><input type="text" id="sal" placeholder="Salario"  required oninput="formatearMiles(this)" onkeypress="soloNumeros(event)"/></td>
             </tr>
             <tr>
                 <td>Días trabajados:</td>
-                <td><input type="text" id="dt" placeholder="Días trabajados" /></td>
+                <td><input type="text" id="dt" placeholder="Días trabajados" required onkeypress="soloNumeros(event)"/></td>
                 <td>Auxilio de transporte:</td>
-                <td><input type="text" id="ax" placeholder="Auxilio de transporte"/></td>
+                <td><input type="text" id="ax" placeholder="Auxilio de transporte" required oninput="formatearMiles(this)" onkeypress="soloNumeros(event)"/></td>
                 <td>Horas extra diurnas: </td>
-                <td><input type="text" id="hed" placeholder="Horas extras diurnas" /></td>
+                <td><input type="text" id="hed" placeholder="Horas extras diurnas" value="0" required onkeypress="soloNumeros(event)"/></td>
 
             </tr>
             <tr>
                 <td>Horas extras nocturnas:  </td>
-                <td><input type="text" id="hen" placeholder="Horas extras nocturnas" /></td>
+                <td><input type="text" id="hen" placeholder="Horas extras nocturnas" value="0" required onkeypress="soloNumeros(event)"/></td>
                 <td>Prestamo</td>
-                <td><input type="text" id="Pre" placeholder="prestamo" /></td>
+                <td><input type="text" id="Pre" placeholder="prestamo" value="0" required oninput="formatearMiles(this)" onkeypress="soloNumeros(event)"/></td>
             </tr>
         </table>
         
+    <!-- boton para calcular nómina-->
         <button onclick="calcular()">Calcular nómina</button>
 
-        
+    <!-- div para mostrar el resultado-->
         <div id="listaNominas"></div> 
 
 
@@ -47,94 +48,134 @@
 
     
     <script>
-       
+        // Funciones para validar la entrada de datos
+        // Solo permite números y letras
+        function soloNumeros(event) {
+            const key = event.keyCode || event.which;
+            if (key < 48 || key > 57) {
+                event.preventDefault();
+            }
+        }
+        function soloLetras(event) {
+            const key = event.keyCode || event.which;
+            if ((key < 65 || key > 90) && (key < 97 || key > 122) && key !== 32) {
+                event.preventDefault();
+            }
+        }
+        // Función para mostrar alertas
+        // Muestra un mensaje de alerta en la pantalla
+        // y lo oculta después de 1 segundo
+        function alert(message) {
+            const alertBox = document.createElement("div");
+            alertBox.className = "alert";
+            alertBox.textContent = message;
+            document.body.appendChild(alertBox);
+            setTimeout(() => {
+                alertBox.remove();
+            }, 1000);
+        }
+
+        // Formatea el número de entrada con separadores de miles colombianos
+        function formatearMiles(input) {
+    // Elimina todo lo que no sea número
+    let valor = input.value.replace(/\D/g, '');
+    if (valor === '') {
+        input.value = '';
+        return;
+    }
+    // Formatea el número con separadores de miles colombianos
+    input.value = parseInt(valor).toLocaleString('es-CO');
+}
+
+       // Función para calcular la nómina
         function calcular() {
             
-            const prestamo = document.getElementById("Pre").value;
-            const d = document.getElementById("d").value;
+            // Obtiene los valores de los campos de entrada
+            // Reemplaza los puntos en los números para evitar errores de formato
+            const prestamo = document.getElementById("Pre").value.replace(/\./g, '');
+            const d = document.getElementById("d").value
             const n = document.getElementById("n").value;
             const dt = document.getElementById("dt").value;
             const hed = document.getElementById("hed").value;
             const hen = document.getElementById("hen").value;
-            const salario = document.getElementById("sal").value;
-            const auxilio = document.getElementById("ax").value;
+            const salario = document.getElementById("sal").value.replace(/\./g, '');
+            const auxilio = document.getElementById("ax").value.replace(/\./g, '');
+            
+            // Validación de campos vacíos
+            if (d ==="" || n === "" || salario === "" || dt === "" || auxilio === "" || hed === "" || hen === "") {
+                alert("Por favor, complete todos los campos.");
+                return;
+            }
 
-
+            // Operaciones para calcular la nómina
             const salariobase = (parseInt(salario) / 30) * parseInt(dt);
             const Ched = (parseInt(salario) / 240) * (1.25 * parseInt(hed));
             const Chen = (parseInt(salario) / 240) * (1.75 * parseInt(hen));
             const trans = parseInt(auxilio) / 30 * parseInt(dt);
-
-
-
-
             const TDe = salariobase + Ched + Chen + trans ;
-
             const salud = parseInt(salario) * 0.04;
             const Pension = parseInt(salario) * 0.04;
             const TDs = salud + Pension + parseInt(prestamo);
-
             const total = TDe - TDs;
 
-            
-            const resultadoHTML = 
-            `
-             <div class="nomina">
-                <h2 id="resultado">Nóminas</h2>
-                <table class="lista">
+    //tabla de resultados        
+const resultadoHTML = 
+`
+ <div class="nomina">
+    <h2 id="resultado">Nóminas</h2>
+    <table class="lista">
+     <tr>
+        <th><strong>Señor(a)</strong></th>
+        <th><strong>Documento</strong></th>
+        <th><strong>SMMLV</strong></th>
+        <th><strong>Dias T</strong></th>
+        <th><strong>Salario base</strong></th>
+        <th><strong>Aux Transporte</strong></th>
+        <th><strong>H.E Diurnas</strong></th>
+        <th><strong>Valor H.E D</strong></th>
+        <th><strong>H.E N</strong></th>
+        <th><strong>Valor H.E Nocturnas</strong></th>
+        <th><strong>Total devengado</strong></th>
+        <th><strong>Salud</strong></th>
+        <th><strong>Pensión</strong></th>
+        <th><strong>Préstamo</strong></th>
+        <th><strong>Total deducido</strong></th>
+        <th><strong>Total a pagar</strong></th>
+     </tr> 
+     <tr>
+        <td>${n}</td>
+        <td>${d}</td>
+        <td>${Number(salario).toLocaleString('es-CO')}</td>
+        <td>${dt}</td>
+        <td>${salariobase.toLocaleString('es-CO', { maximumFractionDigits:0,minimumFractionDigits:0 })}</td>
+        <td>${trans.toLocaleString('es-CO', { maximumFractionDigits:0,minimumFractionDigits: 0 })}</td>
+        <td>${hed}</td>
+        <td>${Ched.toLocaleString('es-CO', {maximumFractionDigits:0, minimumFractionDigits: 0 })}</td>
+        <td>${hen}</td>
+        <td>${Chen.toLocaleString('es-CO', {maximumFractionDigits:0, minimumFractionDigits: 0 })}</td>
+        <td>${TDe.toLocaleString('es-CO', { minimumFractionDigits: 0 })}</td>
+        <td>${salud.toLocaleString('es-CO', { maximumFractionDigits:0, minimumFractionDigits: 0 })}</td>
+        <td>${Pension.toLocaleString('es-CO', { maximumFractionDigits:0,minimumFractionDigits: 0 })}</td>
+        <td>${Number(prestamo).toLocaleString('es-CO')}</td>
+        <td>${TDs.toLocaleString('es-CO', { maximumFractionDigits:0,minimumFractionDigits: 0 })}</td>
+        <td>${total.toLocaleString('es-CO', {maximumFractionDigits:0, minimumFractionDigits:0 })}</td>
+     </tr> 
+    </table>
+ </div>
+`;
 
-                 <tr>
-                    <th><strong>Señor(a)</strong></th>
-                    <th><strong>Documento</strong></th>
-                    <th><strong>SMMLV</strong></th>
-                    <th><strong>Dias T</strong></th>
-                    <th><strong>Salario base</strong></th>
-                    <th><strong>Aux Trasporte</strong></th>
-                    <th><strong>H.E Diurnas</strong></th>
-                    <th><strong>Valor H.E D</strong></th>
-                    <th><strong>H.E N</strong></th>
-                    <th><strong>Valor H.E Nocturnas</strong></th>
-                    <th><strong>Total devengado</strong></th>
-                    <th><strong>Salud</strong></th>
-                    <th><strong>Pensión</strong></th>
-                    <th><strong>Prestamo</strong></th>
-                    <th><strong>Total deducido</strong></th>
-                    <th><strong>Total a pagar</strong></th>
-                 </tr> 
-                 <tr>
-                    <td>${n}</td>
-                    <td>${d}</td>
-                    <td>${salario}</td>
-                    <td>${dt}</td>
-                    <td>${salariobase.toFixed(2)}</td>
-                    <td>${trans.toFixed(2)}</td>
-                    <td>${hed}</td>
-                    <td>${Ched.toFixed(2)}</td>
-                    <td>${hen}</td>
-                    <td>${Chen.toFixed(2)}</td>
-                    <td>${TDe.toFixed(2)}</td>
-                    <td>${salud.toFixed(2)}</td>
-                    <td>${Pension.toFixed(2)}</td>
-                    <td>${prestamo}</td>
-                    <td>${TDs.toFixed(2)}</td>
-                    <td>${total.toFixed(2)}</td>
-                 </tr> 
-                </table>
-             </div>
-         `;
-
+            // Agrega el resultado a la lista de nóminas
          document.getElementById("listaNominas").innerHTML += resultadoHTML;
-
+         // Limpia los campos de entrada después de calcular
          document.getElementById("n").value = "";
          document.getElementById("d").value = "";
-         document.getElementById("salario") = "";
-         document.getElementById("dt").value = "";
-         document.getElementById("salariobase") = "";
-         document.getElementById("hed").value = "";
-         document.getElementById("hen").value = "";
          document.getElementById("sal").value = "";
+         document.getElementById("dt").value = "";
+         document.getElementById("hed").value = "0";
+         document.getElementById("hen").value = "0";
          document.getElementById("ax").value = "";   
-         document.getElementById("Pre").value = "";
+         document.getElementById("Pre").value = "0";
+
         }     
     </script>    
     
